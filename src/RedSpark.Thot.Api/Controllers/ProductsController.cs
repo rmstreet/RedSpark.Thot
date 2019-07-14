@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RedSpark.Thot.Api.Const;
 using RedSpark.Thot.Api.Models;
 using ErrorMessage = RedSpark.Thot.Api.Const.ErrorMessage.Product;
 
@@ -63,7 +65,9 @@ namespace RedSpark.Thot.Api.Controllers
         public ActionResult<Product> Put(int id, [FromBody] Product productNew)
         {
             if (string.IsNullOrEmpty(productNew.Name))
+            {
                 return BadRequest(ErrorMessage.ProductNameIsRequired);
+            }
 
             var product = FindProduct(id);
 

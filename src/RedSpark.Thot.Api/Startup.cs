@@ -28,23 +28,23 @@ namespace RedSpark.Thot.Api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            // Uma instancia por 
+            // Uma instancia por chamada
             // services.AddTransient<ICollection<Product>, List<Product>>();
 
             // Uma instancia por Request
-            // services.AddScoped<ICollection<Product>, List<Product>>();
+            //services.AddScoped<ICollection<Product>, List<Product>>();
 
             // Uma instancia por aplicação
-            services.AddSingleton<ICollection<Product>, List<Product>>(s => 
+            services.AddSingleton<ICollection<Product>, List<Product>>(s =>
             {
                 return new List<Product>()
                 {
                     new Product() {Id = 1, Name = "Tênis Addidas"},
                     new Product() {Id = 2, Name = "Tênis Nike"},
                 };
-            } );
+            });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
         }
 
