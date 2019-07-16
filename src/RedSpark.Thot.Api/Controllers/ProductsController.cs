@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RedSpark.Thot.Api.Const;
-using RedSpark.Thot.Api.Models;
+using RedSpark.Thot.Api.Models.Example;
 using ErrorMessage = RedSpark.Thot.Api.Const.ErrorMessage.Product;
 
 namespace RedSpark.Thot.Api.Controllers

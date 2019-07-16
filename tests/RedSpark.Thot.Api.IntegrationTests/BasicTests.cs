@@ -1,11 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
-using RedSpark.Thot.Api.Models;
+using RedSpark.Thot.Api.Models.Example;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
