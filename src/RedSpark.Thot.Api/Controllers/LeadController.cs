@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using RedSpark.Thot.Api.Interfaces;
 using RedSpark.Thot.Api.Models;
 using ErrorMessage = RedSpark.Thot.Api.Const.ErrorMessage.Product;
 
@@ -14,20 +15,23 @@ namespace RedSpark.Thot.Api.Controllers
     public class LeadController : ControllerBase
     {
 
-        private ICollection<LeadSummary> Leads { get; }
+        private readonly ILeadRepository _leadRepository;
 
-        public LeadController(ICollection<LeadSummary> leads)
+        public LeadController(ILeadRepository leadRepository)
         {
-            Leads = leads;
+            _leadRepository = leadRepository;
         }
 
-        // GET: api/Leads
+        // GET: api/Leads?isFollowing=true
         [HttpGet]
-        public IEnumerable<LeadSummary> Get()
+        public ActionResult<IEnumerable<LeadSummary>> Get([FromQuery] bool? isFollowing = null)
         {
-            return Leads;
+            //var leads = default(IEnumerable<LeadSummary>);
+            var leads = _leadRepository.GetAll(isFollowing);
+            
+            return Ok(leads);
         }
-
+               
         // GET: api/Leads/5
         [HttpGet("{id}")]
         public ActionResult<LeadSummary> Get(int id)
@@ -51,9 +55,10 @@ namespace RedSpark.Thot.Api.Controllers
                 return BadRequest();
             }
 
-            lead.Id = Leads.Count + 1;
+            
             lead.UpdateDate = DateTime.Now;
-            Leads.Add(lead);
+
+            _leadRepository.Create(lead);
 
             return CreatedAtAction(nameof(Post), lead);
         }
@@ -67,17 +72,12 @@ namespace RedSpark.Thot.Api.Controllers
                 return BadRequest();
             }
 
-            var lead = Find(id);
-
-            if (lead == null)
+            if (!_leadRepository.Update(id, leadNew))
             {
                 return NotFound();
             }
-
-            lead.Title = leadNew.Title;
-            lead.Status = leadNew.Status;
            
-            return Ok(lead);
+            return Ok(leadNew);
         }
 
         // DELETE: api/Leads/5
@@ -91,7 +91,7 @@ namespace RedSpark.Thot.Api.Controllers
                 return NotFound();
             }
 
-            Leads.Remove(lead);
+             _leadRepository.Delete(lead);
 
             return Ok(lead);
         }
@@ -99,7 +99,7 @@ namespace RedSpark.Thot.Api.Controllers
 
         private LeadSummary Find(int id)
         {
-            return Leads.SingleOrDefault(p => p.Id.Equals(id));
+            return _leadRepository.GetById(id);
         }
     }
 }

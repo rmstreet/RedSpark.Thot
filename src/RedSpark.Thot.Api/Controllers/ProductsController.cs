@@ -23,7 +23,7 @@ namespace RedSpark.Thot.Api.Controllers
         // GET api/products
         [HttpPost]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(Product), StatusCodes.Status201Created)]
         public ActionResult Post([FromBody] Product product)
         {
             if (string.IsNullOrEmpty(product.Name))

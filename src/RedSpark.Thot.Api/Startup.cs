@@ -11,8 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RedSpark.Thot.Api.Infra.Helpers;
+using RedSpark.Thot.Api.Interfaces;
 using RedSpark.Thot.Api.Models;
 using RedSpark.Thot.Api.Models.Example;
+using RedSpark.Thot.Api.Repository;
 using static RedSpark.Thot.Api.Controllers.ProductsController;
 
 namespace RedSpark.Thot.Api
@@ -50,6 +52,8 @@ namespace RedSpark.Thot.Api
             {
                 return DataGenerator.LeadSummaries(10);
             });
+
+            services.AddScoped<ILeadRepository, LeadRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

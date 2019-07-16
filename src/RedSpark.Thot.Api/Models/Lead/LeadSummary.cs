@@ -27,5 +27,11 @@ namespace RedSpark.Thot.Api.Models
             // TODO: Validação de Update
             return true;
         }
+
+        internal void Update(LeadSummary leadNew)
+        {
+            this.Title = leadNew.Title;
+            this.Status = leadNew.Status;
+        }
     }
 }
