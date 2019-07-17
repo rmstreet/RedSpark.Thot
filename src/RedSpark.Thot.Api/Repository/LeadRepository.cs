@@ -1,9 +1,7 @@
 ﻿using RedSpark.Thot.Api.Interfaces;
 using RedSpark.Thot.Api.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace RedSpark.Thot.Api.Repository
 {
