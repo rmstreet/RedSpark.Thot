@@ -1,4 +1,4 @@
-﻿namespace RedSpark.Thot.Api.Models.Example
+﻿namespace RedSpark.Thot.Api.Domain.Models.Example
 {
     public class Product
     {

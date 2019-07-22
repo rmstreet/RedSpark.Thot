@@ -1,7 +1,7 @@
-﻿using RedSpark.Thot.Api.Models;
+﻿using RedSpark.Thot.Api.Models.Lead.Output;
 using System.Collections.Generic;
 
-namespace RedSpark.Thot.Api.Interfaces
+namespace RedSpark.Thot.Api.Domain.Interfaces
 {
     public interface ILeadRepository
     {

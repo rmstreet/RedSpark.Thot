@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using RedSpark.Thot.Api.Infra.Helpers;
-using RedSpark.Thot.Api.Interfaces;
-using RedSpark.Thot.Api.Models;
-using RedSpark.Thot.Api.Models.Example;
-using RedSpark.Thot.Api.Repository;
-using static RedSpark.Thot.Api.Controllers.ProductsController;
+using Newtonsoft.Json.Converters;
 
 namespace RedSpark.Thot.Api
 {
@@ -31,32 +19,17 @@ namespace RedSpark.Thot.Api
         
         public void ConfigureServices(IServiceCollection services)
         {
+                       
 
-            // Uma instancia por chamada
-            // services.AddTransient<ICollection<Product>, List<Product>>();
-
-            // Uma instancia por Request
-            //services.AddScoped<ICollection<Product>, List<Product>>();
-
-            // Uma instancia por aplicação
-            services.AddSingleton<ICollection<Product>, List<Product>>(s =>
-            {
-                return new List<Product>()
+            services
+                .AddMvc()
+                .AddJsonOptions(options =>
                 {
-                    new Product() {Id = 1, Name = "Tênis Addidas"},
-                    new Product() {Id = 2, Name = "Tênis Nike"},
-                };
-            });
-
-            services.AddSingleton<ICollection<LeadSummary>, List<LeadSummary>>(s =>
-            {
-                return DataGenerator.LeadSummaries(10);
-            });
-
-            services.AddScoped<ILeadRepository, LeadRepository>();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter()); // Serializa um enum para string e vice versa
+                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore; // Não serializa o nome da propriedade se a mesma estiver com valor nulo
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

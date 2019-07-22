@@ -2,8 +2,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RedSpark.Thot.Api.Models.Example;
-using ErrorMessage = RedSpark.Thot.Api.Const.ErrorMessage.Product;
+using RedSpark.Thot.Api.Domain.Models.Example;
+using ErrorMessage = RedSpark.Thot.Api.Domain.Const.ErrorMessage.Product;
 
 namespace RedSpark.Thot.Api.Controllers
 {

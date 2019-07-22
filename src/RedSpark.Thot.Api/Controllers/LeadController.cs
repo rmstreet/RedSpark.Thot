@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using RedSpark.Thot.Api.Interfaces;
-using RedSpark.Thot.Api.Models;
-using ErrorMessage = RedSpark.Thot.Api.Const.ErrorMessage.Product;
-
+using RedSpark.Thot.Api.Domain.Interfaces;
+using RedSpark.Thot.Api.Models.Lead.Output;
 
 namespace RedSpark.Thot.Api.Controllers
 {
@@ -67,11 +64,6 @@ namespace RedSpark.Thot.Api.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] LeadSummary leadNew)
         {
-            if (!leadNew.CanUpdate())
-            {
-                return BadRequest();
-            }
-
             if (!_leadRepository.Update(id, leadNew))
             {
                 return NotFound();

@@ -1,13 +1,13 @@
-﻿using RedSpark.Thot.Api.Interfaces;
-using RedSpark.Thot.Api.Models;
+﻿using RedSpark.Thot.Api.Domain.Interfaces;
+using RedSpark.Thot.Api.Models.Lead.Output;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RedSpark.Thot.Api.Repository
+namespace RedSpark.Thot.Api.Data.Repository
 {
-    public class LeadRepository : ILeadRepository
+    public class LeadCollectionRepository : ILeadRepository
     {
-        public LeadRepository(ICollection<LeadSummary> leads)
+        public LeadCollectionRepository(ICollection<LeadSummary> leads)
         {
             Leads = leads;
         }
@@ -42,7 +42,7 @@ namespace RedSpark.Thot.Api.Repository
 
             if(lead != null)
             {
-                lead.Update(leadNew);
+                //lead.Update(leadNew);
                 updated = true;
             }
 
