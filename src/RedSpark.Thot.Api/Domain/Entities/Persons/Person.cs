@@ -26,9 +26,9 @@ namespace RedSpark.Thot.Api.Domain.Entities.Persons
         public Phone Phone { get; private set; }
         public string UrlGithub { get; private set; }
 
-        public List<Lead> LeadsResponsible { get; private set; }
-        public List<Skill> Skills { get; private set; }
-        public List<Project> Projects { get; private set; }
+        public List<Lead> LeadsCreatedByMe { get; private set; }
+        public List<Skill> MySkills { get; private set; }
+        public List<Project> ProjectsResponsible { get; private set; }
         public List<LeadComent> ComentsByMe { get; set; }
 
     }

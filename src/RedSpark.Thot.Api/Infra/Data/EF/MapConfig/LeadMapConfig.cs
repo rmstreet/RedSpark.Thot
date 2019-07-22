@@ -1,7 +1,9 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RedSpark.Thot.Api.Domain.Core.ValueObject;
 using RedSpark.Thot.Api.Domain.Entities.Leads;
+using RedSpark.Thot.Api.Domain.Entities.Persons;
 using RedSpark.Thot.Api.Domain.Models.Leads;
 
 namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
@@ -27,7 +29,7 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
 
             builder
                 .HasOne(l => l.CreatedBy)
-                .WithMany(p => p.LeadsResponsible)
+                .WithMany(p => p.LeadsCreatedByMe) 
                 .HasForeignKey(l => l.CreatedById);
 
             // TODO: Completar
@@ -85,6 +87,50 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
             builder
                 .Property(c => c.Description)
                 .HasMaxLength(500);
+
+        }
+    }
+
+    public class PersonMapConfig : IEntityTypeConfiguration<Person>
+    {
+        public void Configure(EntityTypeBuilder<Person> builder)
+        {
+            builder.ToTable("Person");
+
+            builder.HasKey(p => p.Id);
+
+            builder
+                .Property(p => p.ImageUrl)
+                .HasMaxLength(500);
+
+            builder
+                .Property(p => p.Name)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder
+                .Property(p => p.Resume)
+                .HasMaxLength(1000)
+                .IsRequired();
+
+            builder
+                .Property(p => p.Job)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            builder
+                .Property(p => p.Phone)
+                .HasConversion<string>(p => p.Number, s => (Phone)s)
+                .IsRequired();
+
+            builder
+                .Property(p => p.UrlGithub)
+                .HasMaxLength(500);
+
+            builder
+                .HasMany(p => p.LeadsCreatedByMe)
+                .WithOne(l => l.CreatedBy)
+                .HasForeignKey(l => l.CreatedById);
 
         }
     }
