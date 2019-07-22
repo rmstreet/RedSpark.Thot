@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
+using RedSpark.Thot.Api.Domain.Core.Entities;
 using RedSpark.Thot.Api.Domain.Models.Leads;
 using RedSpark.Thot.Api.Infra.Data.EF.MapConfig;
 using System;
@@ -188,7 +189,7 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
         //            switch (entry.State)
         //            {
         //                case EntityState.Modified:
-        //                    //trackable.UpdateDate = now;  
+        //                    trackable.UpdateDate = now;  
         //                    break;
 
         //                case EntityState.Added:

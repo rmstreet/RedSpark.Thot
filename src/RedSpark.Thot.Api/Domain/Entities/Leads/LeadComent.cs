@@ -22,13 +22,11 @@ namespace RedSpark.Thot.Api.Domain.Models.Leads
         public Person CreatedBy { get; private set; }
 
 
-        #region Respostas - Verificar
-        // TODO: Resposta ? ???? Não definido ainda
+        #region Resposta
         public int? AnswerLeadId { get; private set; }
-        public Lead AnswerLead { get; private set; }
-
         public int? AnswerComentId { get; private set; }
-        public Coment AnswerComent { get; private set; }
+
+        public LeadComent LeadComentFather { get; private set; }
 
         public List<LeadComent> Answers { get; private set; }
         #endregion

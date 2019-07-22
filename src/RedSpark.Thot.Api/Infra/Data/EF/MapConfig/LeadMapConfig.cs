@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RedSpark.Thot.Api.Domain.Entities.Leads;
 using RedSpark.Thot.Api.Domain.Models.Leads;
 
 namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
@@ -29,8 +30,9 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
                 .WithMany(p => p.LeadsResponsible)
                 .HasForeignKey(l => l.CreatedById);
 
-            builder
-                .HasMany(l => l.PersonsFollowing);
+            // TODO: Completar
+            //builder
+            //    .HasMany(l => l.PersonsFollowing);
 
 
         }
@@ -42,7 +44,7 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
         public void Configure(EntityTypeBuilder<LeadComent> builder)
         {
             builder.ToTable("LeadComent");
-
+            
             builder.HasKey(lc => new { lc.LeadId, lc.ComentId });
 
             builder
@@ -60,8 +62,31 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
                 .WithMany(p => p.Coments)
                 .HasForeignKey(lc => lc.CreatedById);
 
-            
+            builder
+                .HasOne(lc => lc.LeadComentFather)
+                .WithMany(lcf => lcf.Answers)
+                .HasForeignKey(lc => new { lc.AnswerLeadId, lc.AnswerComentId });
+
+
+            builder
+                .Ignore(lc => lc.Id);
+        }
+    }
+
+
+    public class ComentMapConfig : IEntityTypeConfiguration<Coment>
+    {
+        public void Configure(EntityTypeBuilder<Coment> builder)
+        {
+            builder.ToTable("Coment");
+
+            builder.HasKey(c => c.Id);
+
+            builder
+                .Property(c => c.Description)
+                .HasMaxLength(500);
 
         }
     }
+
 }
