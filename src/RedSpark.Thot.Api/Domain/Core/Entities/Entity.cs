@@ -7,11 +7,12 @@ namespace RedSpark.Thot.Api.Domain.Core.Entities
 
         protected Entity()
         {
-            CreateDate = DateTime.UtcNow;
         }
 
         public int Id { get; protected set; }
-        public DateTime? UpdateDate { get; protected set; }
-        public DateTime CreateDate { get; private set; }
+        private DateTime? _updateDate;
+        private DateTime _createDate;
+        public DateTime? UpdateDate => _updateDate;
+        public DateTime CreateDate => _createDate;
     }
 }

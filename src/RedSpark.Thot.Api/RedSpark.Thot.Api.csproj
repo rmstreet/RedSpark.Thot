@@ -15,8 +15,4 @@
     <PackageReference Include="Bogus" Version="28.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Leads\Input\" />
-  </ItemGroup>
-
 </Project>

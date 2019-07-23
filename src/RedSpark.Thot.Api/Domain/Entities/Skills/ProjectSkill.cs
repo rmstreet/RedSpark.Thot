@@ -5,6 +5,12 @@ namespace RedSpark.Thot.Api.Domain.Entities.Skills
 {
     public class ProjectSkill : Entity
     {
+        public ProjectSkill(int projectId, int skillId)
+        {
+            ProjectId = projectId;
+            SkillId = skillId;
+        }
+
         public int ProjectId { get; private set; }
         public Project Project { get; private set; }
 

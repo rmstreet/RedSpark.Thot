@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
@@ -29,6 +30,10 @@ namespace RedSpark.Thot.Api
                     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore; // Não serializa o nome da propriedade se a mesma estiver com valor nulo
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services
+                .AddDbContext<Infra.Data.EF.Context.ThotContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ThotSqlServerConnection")));
+
             
         }
 

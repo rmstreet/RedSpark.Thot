@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RedSpark.Thot.Api.Domain.Entities.Skills;
+using RedSpark.Thot.Api.Infra.Data.EF.MapConfig.Extensions;
 
 namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
 {
@@ -22,6 +23,9 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
                 .HasOne(ps => ps.Skill)
                 .WithMany(p => p.ProjectSkills)
                 .HasForeignKey(ps => ps.SkillId);
+
+            builder
+                .ConfigMapDefaultFields();
 
         }
     }

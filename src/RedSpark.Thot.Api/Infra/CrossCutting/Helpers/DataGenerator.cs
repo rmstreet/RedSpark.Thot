@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using RedSpark.Thot.Api.Domain.Models.Leads;
+using RedSpark.Thot.Api.Domain.Entities.Leads;
 using RedSpark.Thot.Api.Models.Lead.Output;
 using System;
 using System.Collections.Generic;

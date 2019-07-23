@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RedSpark.Thot.Api.Domain.Models.Example;
+using RedSpark.Thot.Api.Domain.Entities.Example;
 using System.Collections.Generic;
 using RedSpark.Thot.Api.Domain.Interfaces;
 using RedSpark.Thot.Api.Data.Repository;

@@ -1,7 +1,7 @@
 ﻿using RedSpark.Thot.Api.Domain.Core.ValueObject;
 using RedSpark.Thot.Api.Domain.Entities.Projects;
 using RedSpark.Thot.Api.Domain.Entities.Skills;
-using RedSpark.Thot.Api.Domain.Models.Leads;
+using RedSpark.Thot.Api.Domain.Entities.Leads;
 using System.Collections.Generic;
 using System.Security;
 
@@ -31,8 +31,15 @@ namespace RedSpark.Thot.Api.Domain.Entities.Persons
         public List<PersonLead> LeadsFollowedByMe { get; private set; }
         public List<PersonSkill> MySkills { get; private set; }
         public List<Project> ProjectsResponsible { get; private set; }
-        public List<LeadComent> ComentsByMe { get; private set; }
+        public List<Coment> ComentsByMe { get; private set; }
         public List<ProjectPerson> ProjectsMember { get; private set; }
+
+        /**
+         * 
+         * (21) 98754-7632
+         * 11987547632
+
+         * */
 
     }
 

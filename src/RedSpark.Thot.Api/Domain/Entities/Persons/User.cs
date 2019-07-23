@@ -14,5 +14,7 @@ namespace RedSpark.Thot.Api.Domain.Entities.Persons
 
         public string Username { get; set; }
         public SecureString Password { get; set; }
+
+        // Checkmarx
     }
 }

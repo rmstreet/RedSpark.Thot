@@ -3,16 +3,16 @@ using RedSpark.Thot.Api.Domain.Core.Entities;
 using RedSpark.Thot.Api.Domain.Entities.Persons;
 using System.Collections.Generic;
 
-namespace RedSpark.Thot.Api.Domain.Models.Leads
+namespace RedSpark.Thot.Api.Domain.Entities.Leads
 {
     public class Lead : Entity
     {
-        public Lead(string title, Person createdBy, LeadStatus status)
+        public Lead(string title, int createdById, LeadStatus status)
         {
             // TODO: Validar os dados entrada
 
             Title = title;
-            CreatedBy = createdBy;
+            CreatedById = createdById;
             Status = status;
         }
 
@@ -22,8 +22,8 @@ namespace RedSpark.Thot.Api.Domain.Models.Leads
         public LeadStatus Status { get; private set; }
 
         public List<PersonLead> PersonsFollowing { get; private set; }
-        public List<LeadComent> Coments { get; private set; }
-        
+        public List<Coment> Coments { get; private set; }
+        // hoc setters
         public void Update(string title, LeadStatus status)
         {
             // TODO: Validar as entradas

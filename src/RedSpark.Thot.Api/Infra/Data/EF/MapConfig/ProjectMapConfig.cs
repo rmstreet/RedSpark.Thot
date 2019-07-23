@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RedSpark.Thot.Api.Domain.Entities.Projects;
+using RedSpark.Thot.Api.Infra.Data.EF.MapConfig.Extensions;
 
 namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
 {
@@ -41,6 +42,9 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
                 .HasOne(p => p.Responsible)
                 .WithMany(r => r.ProjectsResponsible)
                 .HasForeignKey(p => p.ResponsibleId);
+
+            builder
+                .ConfigMapDefaultFields();
 
         }
     }

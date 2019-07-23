@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RedSpark.Thot.Api.Domain.Entities.Persons;
+using RedSpark.Thot.Api.Infra.Data.EF.MapConfig.Extensions;
 
 namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
 {
@@ -23,6 +24,8 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
                 .WithMany(p => p.LeadsFollowedByMe)
                 .HasForeignKey(pl => pl.PersonId);
 
+            builder
+                .ConfigMapDefaultFields();
 
             builder
                 .Ignore(pl => pl.Id);

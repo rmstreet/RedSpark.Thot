@@ -1,4 +1,4 @@
-﻿namespace RedSpark.Thot.Api.Domain.Models.Leads
+﻿namespace RedSpark.Thot.Api.Domain.Entities.Leads
 {
     public enum LeadStatus
     {

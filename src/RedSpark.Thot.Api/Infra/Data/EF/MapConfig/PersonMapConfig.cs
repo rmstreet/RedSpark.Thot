@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RedSpark.Thot.Api.Domain.Core.ValueObject;
 using RedSpark.Thot.Api.Domain.Entities.Persons;
+using RedSpark.Thot.Api.Infra.Data.EF.MapConfig.Extensions;
 
 namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
 {
@@ -10,32 +11,31 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
     {
         public void Configure(EntityTypeBuilder<Person> builder)
         {
-            builder.ToTable("Person");
-
-            builder.HasKey(p => p.Id);
-
+            
+            
             builder
                 .Property(p => p.ImageUrl)
                 .HasMaxLength(500);
-
+            
             builder
                 .Property(p => p.Name)
+                .HasColumnType("varchar")
+                .HasMaxLength(100)
                 .IsRequired();
 
             builder
                 .Property(p => p.Resume)
-                .HasMaxLength(1000)
-                .IsRequired();
+                .HasColumnType("varchar")
+                .HasMaxLength(1000);
 
             builder
                 .Property(p => p.Job)
-                .HasMaxLength(50)
-                .IsRequired();
+                .HasColumnType("varchar")
+                .HasMaxLength(50);
 
             builder
                 .Property(p => p.Phone)
-                .HasConversion<string>(p => p.Number, s => (Phone)s)
-                .IsRequired();
+                .HasConversion<string>(p => p.Number, s => (Phone)s);
 
             builder
                 .Property(p => p.UrlGithub)
@@ -52,15 +52,14 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
                 .WithOne(pj => pj.Responsible)
                 .HasForeignKey(pj => pj.ResponsibleId);
 
+            builder
+                .ConfigMapDefaultFields();
 
             // Skills do Person - Não precisa mapeara qui, porque já é mapeado no PersonSkill
             //builder
             //    .HasMany(p => p.MySkills)
             //    .WithOne(sp => sp.Person)
             //    .HasForeignKey(sp => sp.PersonId);
-
-
-
 
         }
     }

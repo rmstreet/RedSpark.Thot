@@ -10,7 +10,7 @@ namespace RedSpark.Thot.Api.Domain.Entities.Projects
     {
         public Project(string logoUrl, string name, string company, 
             string description, DateTime beginDate, DateTime endDate,
-            Person person)
+            int responsibleId)
         {
             LogoUrl = logoUrl;
             Name = name;
@@ -18,7 +18,7 @@ namespace RedSpark.Thot.Api.Domain.Entities.Projects
             Description = description;
             BeginDate = beginDate;
             EndDate = endDate;
-            Responsible = person;
+            ResponsibleId = responsibleId;
         }
 
         public string LogoUrl { get; private set; }

@@ -1,56 +1,71 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
 using RedSpark.Thot.Api.Domain.Core.Entities;
-using RedSpark.Thot.Api.Domain.Models.Leads;
-using RedSpark.Thot.Api.Infra.Data.EF.MapConfig;
+using RedSpark.Thot.Api.Domain.Entities.Leads;
+using RedSpark.Thot.Api.Domain.Entities.Persons;
+using RedSpark.Thot.Api.Domain.Entities.Projects;
+using RedSpark.Thot.Api.Domain.Entities.Skills;
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RedSpark.Thot.Api.Infra.Data.EF.Context
 {
     public class ThotContext : DbContext
     {
+        // LEADS
         public DbSet<Lead> Leads { get; set; }
+        public DbSet<Coment> Coments { get; set; }
 
-        private readonly IConfiguration _configuration;
+        // PERSONS
+        public DbSet<User> Users { get; set; }
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<PersonLead> PersonLeads { get; set; }
+        
 
-        public ThotContext(IConfiguration configuration)
+        // PROJECTS
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectPerson> ProjectPersons { get; set; }
+
+        // SKILL
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<PersonSkill> PersonSkills { get; set; }
+        public DbSet<ProjectSkill> ProjectSkills { get; set; }
+
+
+
+        public ThotContext(DbContextOptions<ThotContext> options)
+            : base(options)
         {
-            _configuration = configuration;
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ThotSqlServerConnection"));
-
-            base.OnConfiguring(optionsBuilder);
-        }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             #region Mapeamento default para propriedades - Exemplo: Todas as Propriedades String como varchar
             // Apartir do EF Core v1.1.0
-            modelBuilder
-                .Model   // 1 - Pegando Modelo de Configuração
-                .GetEntityTypes()  // 2 - Todos os tipos de entidades, vulgo o que é mapeado para virar tabela
-                .SelectMany(t => t.GetProperties())  // 3 - Pegar todas as propriedades de todas as entidades
-                .Where(p => p.ClrType == typeof(string))  // 4 - Filtrando apenas entidade do tipo string
-                .Select(p => modelBuilder.Entity(p.DeclaringEntityType.ClrType).Property(p.Name))  // 5 - Selecionando e Mapeando as Propriedades
-                .Select(pb => pb
-                            .HasColumnType("varchar")   // 6 - Determinando que as coluans no banco sejam varchar
-                            .HasMaxLength(100)          // 7 - Tamanho Padrão será de 100 caracteres
-                        )
-                .ToList();  // 8 - Forçando o meu Lambda rodar
+            //modelBuilder
+            //    .Model   // 1 - Pegando Modelo de Configuração
+            //    .GetEntityTypes()  // 2 - Todos os tipos de entidades, vulgo o que é mapeado para virar tabela
+            //    .SelectMany(t => t.GetProperties())  // 3 - Pegar todas as propriedades de todas as entidades
+            //    .Where(p => p.ClrType == typeof(string))  // 4 - Filtrando apenas entidade do tipo string
+            //    .Select(p => modelBuilder.Entity(p.DeclaringEntityType.ClrType).Property(p.Name))  // 5 - Selecionando e Mapeando as Propriedades
+            //    .Select(pb => pb
+            //                .HasColumnType("varchar")   // 6 - Determinando que as coluans no banco sejam varchar
+            //                .HasMaxLength(100)          // 7 - Tamanho Padrão será de 100 caracteres
+            //            )
+            //    .ToList();  // 8 - Forçando o meu Lambda rodar
 
-            modelBuilder.Model.GetEntityTypes()
-                .SelectMany(t => t.GetProperties())
-                .Where(p => p.Name.Equals("CreateDate") || p.Name.Equals("UpdateDate"))
-                .Select(p => modelBuilder.Entity(p.DeclaringEntityType.ClrType).Property(p.Name).HasColumnType("datetime"))
-                .ToList();
-                
+            //modelBuilder.Model.GetEntityTypes()
+            //    .SelectMany(t => t.GetProperties())
+            //    .Where(p => p.Name.Equals("CreateDate") || p.Name.Equals("UpdateDate"))
+            //    .Select(p => modelBuilder
+            //                    .Entity(p.DeclaringEntityType.ClrType)
+            //                        .Property(p.Name)
+            //                        .HasColumnType("datetime"))
+            //    .ToList();
+
             #endregion
 
 
@@ -60,11 +75,11 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
             //    .ToTable("Lead");
 
             //modelBuilder.Entity<Lead>()
-            //    .HasKey( l => l.Id);            
+            //    .HasKey(l => l.Id);
 
             //modelBuilder.Entity<Lead>()
             //    .Property(l => l.Title)
-            //    .HasColumnName("Titulo")                
+            //    .HasColumnName("Titulo")
             //    .HasColumnType("varchar")
             //    .HasMaxLength(60)
             //    .IsRequired();
@@ -133,8 +148,8 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
 
             #region Configurando Modelos - Opção 3 (Nova)
 
-            //var assembly = typeof(ThotContext).Assembly;
-            //modelBuilder.ApplyConfigurationsFromAssembly(assembly);
+            var assembly = typeof(ThotContext).Assembly;
+            modelBuilder.ApplyConfigurationsFromAssembly(assembly);
 
             #endregion
 
@@ -143,13 +158,13 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
              *      Transformar as propriedade em readonly.
              * */
 
-            modelBuilder.Entity<Lead>()
-                .Property(l => l.CreateDate)
-                .HasField("_createDate"); // Nome da variavel privada.
+            //modelBuilder.Entity<Lead>()
+            //    .Property(l => l.CreateDate)
+            //    .HasField("_createDate"); // Nome da variavel privada.
 
-            modelBuilder.Entity<Lead>()
-                .Property(l => l.UpdateDate)
-                .HasField("_updateDate");
+            //modelBuilder.Entity<Lead>()
+            //    .Property(l => l.UpdateDate)
+            //    .HasField("_updateDate");
 
 
             #endregion
@@ -159,41 +174,42 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
              *      Nesse caso não precisamos ter as propriedades.
              * */
 
-            modelBuilder.Entity<Lead>().Property<DateTime>("CreateDate");
+            //modelBuilder.Entity<Lead>().Property<DateTime>("CreateDate");
 
-            modelBuilder.Entity<Lead>().Property("UpdateDate");
+            //modelBuilder.Entity<Lead>().Property("UpdateDate");
 
 
             #endregion
+
             base.OnModelCreating(modelBuilder);
         }
 
 
         #region Atribuir logicas de criação e atualização default - Part 2 - Opção 1, 2 e 3
 
-        //public override int SaveChanges()
-        //{
-        //    OnBeforeSaving();
-        //    return base.SaveChanges();
-        //}
+        public override int SaveChanges()
+        {
+            OnBeforeSaving();
+            return base.SaveChanges();
+        }
 
-        //public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        //{
-        //    OnBeforeSaving();
-        //    return base.SaveChanges(acceptAllChangesOnSuccess);
-        //}
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            OnBeforeSaving();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
 
-        //public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        //{
-        //    OnBeforeSaving();
-        //    return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        //}
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            OnBeforeSaving();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
 
-        //public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        //{
-        //    OnBeforeSaving();
-        //    return base.SaveChangesAsync(cancellationToken);
-        //}
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            OnBeforeSaving();
+            return base.SaveChangesAsync(cancellationToken);
+        }
 
         #region Opção 1
         //private void OnBeforeSaving()
@@ -211,11 +227,11 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
         //            switch (entry.State)
         //            {
         //                case EntityState.Modified:
-        //                    trackable.UpdateDate = now;  
+        //                    trackable.UpdateDate = now;
         //                    break;
 
         //                case EntityState.Added:
-        //                    //trackable.CreateDate = now;
+        //                    trackable.CreateDate = now;
         //                    break;
         //            }
         //        }
@@ -225,27 +241,27 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
 
         #region Opção 2 e 3
 
-        //private void OnBeforeSaving()
-        //{
-        //    var entries = ChangeTracker.Entries();
-        //    foreach (var entry in entries)
-        //    {
-        //        if (entry.Entity is Entity entityModel)
-        //        {
-        //            var now = DateTime.UtcNow;
-        //            switch (entry.State)
-        //            {
-        //                case EntityState.Modified:
-        //                    entry.CurrentValues["UpdateDate"] = now;
-        //                    break;
+        private void OnBeforeSaving()
+        {
+            var entries = ChangeTracker.Entries();
+            foreach (var entry in entries)
+            {
+                if (entry.Entity is Entity entityModel)
+                {
+                    var now = DateTime.UtcNow;
+                    switch (entry.State)
+                    {
+                        case EntityState.Modified:
+                            entry.CurrentValues["UpdateDate"] = now;
+                            break;
 
-        //                case EntityState.Added:
-        //                    entry.CurrentValues["CreateDate"] = now;
-        //                    break;
-        //            }
-        //        }
-        //    }
-        //}
+                        case EntityState.Added:
+                            entry.CurrentValues["CreateDate"] = now;
+                            break;
+                    }
+                }
+            }
+        }
         #endregion
 
         #endregion

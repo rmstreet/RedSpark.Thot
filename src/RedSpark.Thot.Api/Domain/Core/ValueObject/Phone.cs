@@ -30,6 +30,7 @@ namespace RedSpark.Thot.Api.Domain.Core.ValueObject
         public Phone ApplyMask(TypeMaskPhone typeMask)
         {
             NumberWithMask = Number?.SetMask(typeMask.Value);
+
             return this;
         }
 
