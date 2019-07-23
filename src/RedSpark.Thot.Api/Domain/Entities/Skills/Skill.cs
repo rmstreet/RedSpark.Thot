@@ -1,8 +1,7 @@
 ﻿using RedSpark.Thot.Api.Domain.Core.Entities;
-using RedSpark.Thot.Api.Domain.Entities.Projects;
 using System.Collections.Generic;
 
-namespace RedSpark.Thot.Api.Domain.Entities.Persons
+namespace RedSpark.Thot.Api.Domain.Entities.Skills
 {
     public class Skill : Entity
     {
@@ -13,8 +12,7 @@ namespace RedSpark.Thot.Api.Domain.Entities.Persons
 
         public string Name { get; private set; }
 
-        public List<Person> Persons { get; private set; }
-        public List<Project> Projects { get; private set; }
-
+        public List<PersonSkill> PersonSkill { get; private set; }
+        public List<ProjectSkill> ProjectSkills { get; private set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using RedSpark.Thot.Api.Domain.Core.Entities;
 using RedSpark.Thot.Api.Domain.Entities.Persons;
+using RedSpark.Thot.Api.Domain.Entities.Skills;
 using System;
 using System.Collections.Generic;
 
@@ -31,7 +32,8 @@ namespace RedSpark.Thot.Api.Domain.Entities.Projects
         public Person Responsible { get; private set; }
 
 
-        public List<Skill> Skills { get; private set; }
-        public List<Person> Persons { get; private set; }
+        public List<ProjectSkill> Skills { get; private set; }
+        public List<ProjectPerson> Members { get; private set; }
     }
+
 }

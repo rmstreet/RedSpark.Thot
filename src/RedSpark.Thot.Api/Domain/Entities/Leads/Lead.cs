@@ -21,7 +21,7 @@ namespace RedSpark.Thot.Api.Domain.Models.Leads
         public Person CreatedBy { get; private set; }
         public LeadStatus Status { get; private set; }
 
-        public List<Person> PersonsFollowing { get; private set; }
+        public List<PersonLead> PersonsFollowing { get; private set; }
         public List<LeadComent> Coments { get; private set; }
         
         public void Update(string title, LeadStatus status)

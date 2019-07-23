@@ -5,6 +5,7 @@ using RedSpark.Thot.Api.Domain.Core.Entities;
 using RedSpark.Thot.Api.Domain.Models.Leads;
 using RedSpark.Thot.Api.Infra.Data.EF.MapConfig;
 using System;
+using System.Linq;
 
 namespace RedSpark.Thot.Api.Infra.Data.EF.Context
 {
@@ -30,6 +31,27 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
+            #region Mapeamento default para propriedades - Exemplo: Todas as Propriedades String como varchar
+            // Apartir do EF Core v1.1.0
+            modelBuilder
+                .Model   // 1 - Pegando Modelo de Configuração
+                .GetEntityTypes()  // 2 - Todos os tipos de entidades, vulgo o que é mapeado para virar tabela
+                .SelectMany(t => t.GetProperties())  // 3 - Pegar todas as propriedades de todas as entidades
+                .Where(p => p.ClrType == typeof(string))  // 4 - Filtrando apenas entidade do tipo string
+                .Select(p => modelBuilder.Entity(p.DeclaringEntityType.ClrType).Property(p.Name))  // 5 - Selecionando e Mapeando as Propriedades
+                .Select(pb => pb
+                            .HasColumnType("varchar")   // 6 - Determinando que as coluans no banco sejam varchar
+                            .HasMaxLength(100)          // 7 - Tamanho Padrão será de 100 caracteres
+                        )
+                .ToList();  // 8 - Forçando o meu Lambda rodar
+
+            modelBuilder.Model.GetEntityTypes()
+                .SelectMany(t => t.GetProperties())
+                .Where(p => p.Name.Equals("CreateDate") || p.Name.Equals("UpdateDate"))
+                .Select(p => modelBuilder.Entity(p.DeclaringEntityType.ClrType).Property(p.Name).HasColumnType("datetime"))
+                .ToList();
+                
+            #endregion
 
 
             #region Configurando Modelos - Opção 1
