@@ -5,6 +5,10 @@ using RedSpark.Thot.Api.Domain.Interfaces;
 using RedSpark.Thot.Api.Data.Repository;
 using RedSpark.Thot.Api.Models.Lead.Output;
 using RedSpark.Thot.Api.Infra.CrossCutting.Helpers;
+using Microsoft.EntityFrameworkCore;
+using RedSpark.Thot.Api.Infra.Data.EF.Context;
+using RedSpark.Thot.Api.Domain.Entities.Leads;
+using RedSpark.Thot.Api.Domain.Interfaces.Repositories;
 
 namespace RedSpark.Thot.Api.Infra.IoC
 {
@@ -34,7 +38,17 @@ namespace RedSpark.Thot.Api.Infra.IoC
                 return DataGenerator.LeadSummaries(10);
             });
 
-            services.AddScoped<ILeadRepository, LeadCollectionRepository>();
+
+
+            // Repositories
+            services.AddScoped<ILeadRepository, LeadEFRepository>();
+
+            // DbSets
+            services.AddScoped(sp => sp.GetService<ThotContext>().Set<Lead>());
+
+
+            // Usando um repositorio que a grava em uma coleção em memoria
+            //services.AddScoped<ILeadRepository, LeadCollectionRepository>();
 
             return services;
         }

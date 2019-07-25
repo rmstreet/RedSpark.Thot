@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using RedSpark.Thot.Api.Domain.Interfaces;
+using RedSpark.Thot.Api.Domain.Interfaces.Repositories;
 using RedSpark.Thot.Api.Models.Lead.Output;
 
 namespace RedSpark.Thot.Api.Controllers
@@ -24,7 +25,7 @@ namespace RedSpark.Thot.Api.Controllers
         public ActionResult<IEnumerable<LeadSummary>> Get([FromQuery] bool? isFollowing = null)
         {
             //var leads = default(IEnumerable<LeadSummary>);
-            var leads = _leadRepository.GetAll(isFollowing);
+            var leads = new List<LeadSummary>(); //_leadRepository.GetAll(l => l.);
             
             return Ok(leads);
         }
@@ -55,7 +56,7 @@ namespace RedSpark.Thot.Api.Controllers
             
             lead.UpdateDate = DateTime.Now;
 
-            _leadRepository.Create(lead);
+            //_leadRepository.Create(lead);
 
             return CreatedAtAction(nameof(Post), lead);
         }
@@ -64,10 +65,10 @@ namespace RedSpark.Thot.Api.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] LeadSummary leadNew)
         {
-            if (!_leadRepository.Update(id, leadNew))
-            {
-                return NotFound();
-            }
+            //if (!_leadRepository.Update(id, leadNew))
+            //{
+            //    return NotFound();
+            //}
            
             return Ok(leadNew);
         }
@@ -83,7 +84,7 @@ namespace RedSpark.Thot.Api.Controllers
                 return NotFound();
             }
 
-             _leadRepository.Delete(lead);
+             //_leadRepository.Delete(lead);
 
             return Ok(lead);
         }
@@ -91,7 +92,7 @@ namespace RedSpark.Thot.Api.Controllers
 
         private LeadSummary Find(int id)
         {
-            return _leadRepository.GetById(id);
+            return new LeadSummary(); // _leadRepository.GetById(id);
         }
     }
 }

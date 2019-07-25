@@ -1,4 +1,5 @@
 ﻿
+using FluentValidation;
 using RedSpark.Thot.Api.Domain.Core.Entities;
 using RedSpark.Thot.Api.Domain.Entities.Persons;
 using System.Collections.Generic;
@@ -28,9 +29,28 @@ namespace RedSpark.Thot.Api.Domain.Entities.Leads
         {
             // TODO: Validar as entradas
 
-            Title = title;            
+            Title = title;
             Status = status;
         }
+
+
+        public static class ValidationRules
+        {
+            public class CreationRules : AbstractValidator<Lead>
+            {
+                public CreationRules()
+                {
+                    RuleFor(lead => lead.Title)
+                        .NotEmpty().WithMessage("lead.title.is.required");
+
+                    RuleFor(lead => lead.CreatedById)
+                        .NotEmpty().WithMessage("lead.createdby.is.required");
+
+                }
+            }
+
+        }
+
     }
 
 }
