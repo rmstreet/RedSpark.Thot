@@ -19,8 +19,7 @@ namespace RedSpark.Thot.Api.Domain.Entities.Leads
 
         public int? FatherComentId { get; private set; }
         public Coment FatherComent { get; private set; }
-
-        // TODO: Add relacionamento com Person
+                
         public int CreatedById { get; private set; }
         public Person CreatedBy { get; private set; }
 

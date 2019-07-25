@@ -18,13 +18,11 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
 
             builder
                .Property(p => p.Username)
-               .HasColumnType("varchar")
-               .HasMaxLength(50);
+               .HasColumnType("varchar(50)");
 
             builder
                 .Property(p => p.Password)
-                .HasColumnType("varchar")
-                .HasMaxLength(50)
+                .HasColumnType("varchar(50)")
                 .HasConversion<string>(
                     p => p.ToUnsecuredString(),
                     s => s.ToSecuredString()

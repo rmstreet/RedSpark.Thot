@@ -41,7 +41,7 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {            
 
             #region Mapeamento default para propriedades - Exemplo: Todas as Propriedades String como varchar
             // Apartir do EF Core v1.1.0

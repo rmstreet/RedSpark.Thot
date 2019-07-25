@@ -4,61 +4,44 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
 {
-    public partial class InitialCreateThot : Migration
+    public partial class CreateTablesAndRelationshipsThot : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Coment",
+                name: "Person",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UpdateDate = table.Column<DateTime>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Description = table.Column<string>(maxLength: 500, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Coment", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Skills",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UpdateDate = table.Column<DateTime>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Skills", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UpdateDate = table.Column<DateTime>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Username = table.Column<string>(type: "varchar", maxLength: 50, nullable: true),
-                    Password = table.Column<string>(type: "varchar", maxLength: 50, nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Username = table.Column<string>(type: "varchar(50)", nullable: true),
+                    Password = table.Column<string>(type: "varchar(50)", nullable: true),
                     Discriminator = table.Column<string>(nullable: false),
-                    ImageUrl = table.Column<string>(maxLength: 500, nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Resume = table.Column<string>(maxLength: 1000, nullable: true),
-                    Job = table.Column<string>(maxLength: 50, nullable: true),
-                    Phone = table.Column<string>(nullable: true),
-                    UrlGithub = table.Column<string>(maxLength: 500, nullable: true)
+                    ImageUrl = table.Column<string>(type: "varchar(500)", nullable: true),
+                    Name = table.Column<string>(type: "varchar(100)", nullable: true),
+                    Resume = table.Column<string>(type: "varchar(1000)", nullable: true),
+                    Job = table.Column<string>(type: "varchar(50)", nullable: true),
+                    Phone = table.Column<string>(type: "varchar(11)", nullable: true),
+                    UrlGithub = table.Column<string>(type: "varchar(500)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Person", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Skill",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(50)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skill", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,21 +50,48 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UpdateDate = table.Column<DateTime>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Title = table.Column<string>(type: "varchar", maxLength: 60, nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Title = table.Column<string>(type: "varchar(60)", nullable: false),
                     CreatedById = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(type: "varchar", maxLength: 15, nullable: false)
+                    Status = table.Column<string>(type: "varchar(15)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Lead", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lead_Users_CreatedById",
+                        name: "FK_Lead_Person_CreatedById",
                         column: x => x.CreatedById,
-                        principalTable: "Users",
+                        principalTable: "Person",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Project",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    LogoUrl = table.Column<string>(type: "varchar(500)", nullable: true),
+                    Name = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Company = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Description = table.Column<string>(type: "varchar(1000)", nullable: true),
+                    BeginDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ResponsibleId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Project", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Project_Person_ResponsibleId",
+                        column: x => x.ResponsibleId,
+                        principalTable: "Person",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -91,92 +101,60 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                     PersonId = table.Column<int>(nullable: false),
                     SkillId = table.Column<int>(nullable: false),
                     Id = table.Column<int>(nullable: false),
-                    UpdateDate = table.Column<DateTime>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: false)
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersonSkill", x => new { x.PersonId, x.SkillId });
                     table.ForeignKey(
-                        name: "FK_PersonSkill_Users_PersonId",
+                        name: "FK_PersonSkill_Person_PersonId",
                         column: x => x.PersonId,
-                        principalTable: "Users",
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PersonSkill_Skills_SkillId",
+                        name: "FK_PersonSkill_Skill_SkillId",
                         column: x => x.SkillId,
-                        principalTable: "Skills",
+                        principalTable: "Skill",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Project",
+                name: "Coment",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UpdateDate = table.Column<DateTime>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    LogoUrl = table.Column<string>(maxLength: 500, nullable: true),
-                    Name = table.Column<string>(nullable: false),
-                    Company = table.Column<string>(nullable: false),
-                    Description = table.Column<string>(maxLength: 1000, nullable: true),
-                    BeginDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false),
-                    ResponsibleId = table.Column<int>(nullable: false)
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    Description = table.Column<string>(type: "varchar(500)", nullable: true),
+                    LeadId = table.Column<int>(nullable: false),
+                    FatherComentId = table.Column<int>(nullable: true),
+                    CreatedById = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Project", x => x.Id);
+                    table.PrimaryKey("PK_Coment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Project_Users_ResponsibleId",
-                        column: x => x.ResponsibleId,
-                        principalTable: "Users",
+                        name: "FK_Coment_Person_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LeadComent",
-                columns: table => new
-                {
-                    LeadId = table.Column<int>(nullable: false),
-                    ComentId = table.Column<int>(nullable: false),
-                    UpdateDate = table.Column<DateTime>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    CreatedById = table.Column<int>(nullable: false),
-                    AnswerLeadId = table.Column<int>(nullable: true),
-                    AnswerComentId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LeadComent", x => new { x.LeadId, x.ComentId });
                     table.ForeignKey(
-                        name: "FK_LeadComent_Coment_ComentId",
-                        column: x => x.ComentId,
+                        name: "FK_Coment_Coment_FatherComentId",
+                        column: x => x.FatherComentId,
                         principalTable: "Coment",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_LeadComent_Users_CreatedById",
-                        column: x => x.CreatedById,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_LeadComent_Lead_LeadId",
+                        name: "FK_Coment_Lead_LeadId",
                         column: x => x.LeadId,
                         principalTable: "Lead",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_LeadComent_LeadComent_AnswerLeadId_AnswerComentId",
-                        columns: x => new { x.AnswerLeadId, x.AnswerComentId },
-                        principalTable: "LeadComent",
-                        principalColumns: new[] { "LeadId", "ComentId" },
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,8 +163,8 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                 {
                     PersonId = table.Column<int>(nullable: false),
                     LeadId = table.Column<int>(nullable: false),
-                    UpdateDate = table.Column<DateTime>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: false)
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,9 +176,9 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PersonLead_Users_PersonId",
+                        name: "FK_PersonLead_Person_PersonId",
                         column: x => x.PersonId,
-                        principalTable: "Users",
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -212,16 +190,16 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                     ProjectId = table.Column<int>(nullable: false),
                     PersonId = table.Column<int>(nullable: false),
                     Id = table.Column<int>(nullable: false),
-                    UpdateDate = table.Column<DateTime>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: false)
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProjectPerson", x => new { x.ProjectId, x.PersonId });
                     table.ForeignKey(
-                        name: "FK_ProjectPerson_Users_PersonId",
+                        name: "FK_ProjectPerson_Person_PersonId",
                         column: x => x.PersonId,
-                        principalTable: "Users",
+                        principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -239,8 +217,8 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                     ProjectId = table.Column<int>(nullable: false),
                     SkillId = table.Column<int>(nullable: false),
                     Id = table.Column<int>(nullable: false),
-                    UpdateDate = table.Column<DateTime>(nullable: true),
-                    CreateDate = table.Column<DateTime>(nullable: false)
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -252,32 +230,32 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProjectSkill_Skills_SkillId",
+                        name: "FK_ProjectSkill_Skill_SkillId",
                         column: x => x.SkillId,
-                        principalTable: "Skills",
+                        principalTable: "Skill",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Coment_CreatedById",
+                table: "Coment",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Coment_FatherComentId",
+                table: "Coment",
+                column: "FatherComentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Coment_LeadId",
+                table: "Coment",
+                column: "LeadId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Lead_CreatedById",
                 table: "Lead",
                 column: "CreatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LeadComent_ComentId",
-                table: "LeadComent",
-                column: "ComentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LeadComent_CreatedById",
-                table: "LeadComent",
-                column: "CreatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LeadComent_AnswerLeadId_AnswerComentId",
-                table: "LeadComent",
-                columns: new[] { "AnswerLeadId", "AnswerComentId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonLead_PersonId",
@@ -308,7 +286,7 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LeadComent");
+                name: "Coment");
 
             migrationBuilder.DropTable(
                 name: "PersonLead");
@@ -323,19 +301,16 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                 name: "ProjectSkill");
 
             migrationBuilder.DropTable(
-                name: "Coment");
-
-            migrationBuilder.DropTable(
                 name: "Lead");
 
             migrationBuilder.DropTable(
                 name: "Project");
 
             migrationBuilder.DropTable(
-                name: "Skills");
+                name: "Skill");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Person");
         }
     }
 }

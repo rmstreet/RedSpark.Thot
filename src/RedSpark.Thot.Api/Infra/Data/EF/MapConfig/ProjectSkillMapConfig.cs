@@ -29,5 +29,4 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
 
         }
     }
-
 }

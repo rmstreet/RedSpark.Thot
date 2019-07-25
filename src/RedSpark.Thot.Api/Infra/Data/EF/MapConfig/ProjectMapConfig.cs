@@ -16,32 +16,37 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
 
             builder
                 .Property(p => p.LogoUrl)
-                .HasMaxLength(500);
+                .HasColumnType("varchar(500)");
 
             builder
                 .Property(p => p.Name)
+                .HasColumnType("varchar(100)")
                 .IsRequired();
 
             builder
                 .Property(p => p.Company)
+                .HasColumnType("varchar(100)")
                 .IsRequired();
 
             builder
                 .Property(p => p.Description)
-                .HasMaxLength(1000);
+                .HasColumnType("varchar(1000)");
 
             builder
                 .Property(p => p.BeginDate)
+                .HasColumnType("datetime")
                 .IsRequired();
 
             builder
                 .Property(p => p.EndDate)
+                .HasColumnType("datetime")
                 .IsRequired();
 
             builder
                 .HasOne(p => p.Responsible)
                 .WithMany(r => r.ProjectsResponsible)
-                .HasForeignKey(p => p.ResponsibleId);
+                .HasForeignKey(p => p.ResponsibleId)
+                .IsRequired();
 
             builder
                 .ConfigMapDefaultFields();

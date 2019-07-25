@@ -10,8 +10,8 @@ using RedSpark.Thot.Api.Infra.Data.EF.Context;
 namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
 {
     [DbContext(typeof(ThotContext))]
-    [Migration("20190723194121_AddEAjuste-Thot")]
-    partial class AddEAjusteThot
+    [Migration("20190725001616_Create-Tables-And-Relationships-Thot")]
+    partial class CreateTablesAndRelationshipsThot
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,13 +30,25 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime");
 
+                    b.Property<int>("CreatedById");
+
                     b.Property<string>("Description")
-                        .HasMaxLength(500);
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<int?>("FatherComentId");
+
+                    b.Property<int>("LeadId");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("FatherComentId");
+
+                    b.HasIndex("LeadId");
 
                     b.ToTable("Coment");
                 });
@@ -54,13 +66,11 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasMaxLength(15);
+                        .HasColumnType("varchar(15)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasMaxLength(60);
+                        .HasColumnType("varchar(60)");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime");
@@ -70,35 +80,6 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                     b.HasIndex("CreatedById");
 
                     b.ToTable("Lead");
-                });
-
-            modelBuilder.Entity("RedSpark.Thot.Api.Domain.Entities.Leads.LeadComent", b =>
-                {
-                    b.Property<int>("LeadId");
-
-                    b.Property<int>("ComentId");
-
-                    b.Property<int?>("AnswerComentId");
-
-                    b.Property<int?>("AnswerLeadId");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("CreatedById");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime");
-
-                    b.HasKey("LeadId", "ComentId");
-
-                    b.HasIndex("ComentId");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("AnswerLeadId", "AnswerComentId");
-
-                    b.ToTable("LeadComent");
                 });
 
             modelBuilder.Entity("RedSpark.Thot.Api.Domain.Entities.Persons.PersonLead", b =>
@@ -133,15 +114,13 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                         .IsRequired();
 
                     b.Property<string>("Password")
-                        .HasColumnType("varchar")
-                        .HasMaxLength(50);
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Username")
-                        .HasColumnType("varchar")
-                        .HasMaxLength(50);
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
@@ -156,24 +135,28 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("BeginDate");
+                    b.Property<DateTime>("BeginDate")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Company")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(1000);
+                        .HasColumnType("varchar(1000)");
 
-                    b.Property<DateTime>("EndDate");
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("LogoUrl")
-                        .HasMaxLength(500);
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
 
                     b.Property<int>("ResponsibleId");
 
@@ -256,15 +239,13 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreateDate");
-
-                    b.Property<string>("Name");
-
-                    b.Property<DateTime?>("UpdateDate");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Skills");
+                    b.ToTable("Skill");
                 });
 
             modelBuilder.Entity("RedSpark.Thot.Api.Domain.Entities.Persons.Person", b =>
@@ -272,27 +253,42 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                     b.HasBaseType("RedSpark.Thot.Api.Domain.Entities.Persons.User");
 
                     b.Property<string>("ImageUrl")
-                        .HasMaxLength(500);
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("Job")
-                        .HasColumnType("varchar")
-                        .HasMaxLength(50);
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar")
-                        .HasMaxLength(100);
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .HasColumnType("varchar(11)");
 
                     b.Property<string>("Resume")
-                        .HasColumnType("varchar")
-                        .HasMaxLength(1000);
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<string>("UrlGithub")
-                        .HasMaxLength(500);
+                        .HasColumnType("varchar(500)");
 
                     b.HasDiscriminator().HasValue("Person");
+                });
+
+            modelBuilder.Entity("RedSpark.Thot.Api.Domain.Entities.Leads.Coment", b =>
+                {
+                    b.HasOne("RedSpark.Thot.Api.Domain.Entities.Persons.Person", "CreatedBy")
+                        .WithMany("ComentsByMe")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("RedSpark.Thot.Api.Domain.Entities.Leads.Coment", "FatherComent")
+                        .WithMany("Answers")
+                        .HasForeignKey("FatherComentId");
+
+                    b.HasOne("RedSpark.Thot.Api.Domain.Entities.Leads.Lead", "Lead")
+                        .WithMany("Coments")
+                        .HasForeignKey("LeadId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("RedSpark.Thot.Api.Domain.Entities.Leads.Lead", b =>
@@ -300,29 +296,7 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                     b.HasOne("RedSpark.Thot.Api.Domain.Entities.Persons.Person", "CreatedBy")
                         .WithMany("LeadsCreatedByMe")
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("RedSpark.Thot.Api.Domain.Entities.Leads.LeadComent", b =>
-                {
-                    b.HasOne("RedSpark.Thot.Api.Domain.Entities.Leads.Coment", "Coment")
-                        .WithMany("LeadComents")
-                        .HasForeignKey("ComentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RedSpark.Thot.Api.Domain.Entities.Persons.Person", "CreatedBy")
-                        .WithMany("ComentsByMe")
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RedSpark.Thot.Api.Domain.Entities.Leads.Lead", "Lead")
-                        .WithMany("Coments")
-                        .HasForeignKey("LeadId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("RedSpark.Thot.Api.Domain.Entities.Leads.LeadComent", "LeadComentFather")
-                        .WithMany("Answers")
-                        .HasForeignKey("AnswerLeadId", "AnswerComentId");
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("RedSpark.Thot.Api.Domain.Entities.Persons.PersonLead", b =>
@@ -343,7 +317,7 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Migrations
                     b.HasOne("RedSpark.Thot.Api.Domain.Entities.Persons.Person", "Responsible")
                         .WithMany("ProjectsResponsible")
                         .HasForeignKey("ResponsibleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("RedSpark.Thot.Api.Domain.Entities.Projects.ProjectPerson", b =>

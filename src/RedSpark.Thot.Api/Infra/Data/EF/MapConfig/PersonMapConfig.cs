@@ -10,47 +10,46 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
     public class PersonMapConfig : IEntityTypeConfiguration<Person>
     {
         public void Configure(EntityTypeBuilder<Person> builder)
-        {
-            
+        {            
             
             builder
                 .Property(p => p.ImageUrl)
-                .HasMaxLength(500);
+                .HasColumnType("varchar(500)");
             
             builder
                 .Property(p => p.Name)
-                .HasColumnType("varchar")
-                .HasMaxLength(100)
+                .HasColumnType("varchar(100)")
                 .IsRequired();
 
             builder
                 .Property(p => p.Resume)
-                .HasColumnType("varchar")
-                .HasMaxLength(1000);
+                .HasColumnType("varchar(1000)");
 
             builder
                 .Property(p => p.Job)
-                .HasColumnType("varchar")
-                .HasMaxLength(50);
+                .HasColumnType("varchar(50)");
 
             builder
                 .Property(p => p.Phone)
+                .HasColumnType("varchar(11)")
                 .HasConversion<string>(p => p.Number, s => (Phone)s);
 
             builder
                 .Property(p => p.UrlGithub)
-                .HasMaxLength(500);
+                .HasColumnType("varchar(500)");
 
             builder
                 .HasMany(p => p.LeadsCreatedByMe)
                 .WithOne(l => l.CreatedBy)
-                .HasForeignKey(l => l.CreatedById);
+                .HasForeignKey(l => l.CreatedById)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Projects que o Person é Responsaável
             builder
                 .HasMany(p => p.ProjectsResponsible)
-                .WithOne(pj => pj.Responsible)
-                .HasForeignKey(pj => pj.ResponsibleId);
+                .WithOne(proj => proj.Responsible)
+                .HasForeignKey(proj => proj.ResponsibleId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .ConfigMapDefaultFields();
