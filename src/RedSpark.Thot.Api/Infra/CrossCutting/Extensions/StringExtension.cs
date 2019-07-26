@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace RedSpark.Thot.Api.Infra.CrossCutting.Extensions
 {
     public static class StringExtension
@@ -58,6 +60,16 @@ namespace RedSpark.Thot.Api.Infra.CrossCutting.Extensions
             }
             return sb.ToString();
         }
+
+        public static TEnum Parse<TEnum>(this string input) // where TEnum : Enum   // Valido no C# 7.3 
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return default;
+            }
+            return (TEnum)Enum.Parse(typeof(TEnum), input);
+        }
+        
 
     }
 }

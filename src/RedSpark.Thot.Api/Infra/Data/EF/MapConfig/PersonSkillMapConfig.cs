@@ -25,6 +25,10 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
                 .HasForeignKey(ps => ps.SkillId);
 
             builder
+                .Ignore(ps => ps.Id);
+
+
+            builder
                 .ConfigMapDefaultFields();
 
         }

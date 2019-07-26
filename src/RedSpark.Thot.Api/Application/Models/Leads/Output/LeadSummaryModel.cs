@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace RedSpark.Thot.Api.Models.Lead.Output
+namespace RedSpark.Thot.Api.Application.Models.Lead.Output
 {
-    public class LeadSummary 
+    public class LeadSummaryModel 
     {        
         public int Id { get; set; }
         public string Title { get; set; }

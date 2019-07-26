@@ -1,14 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RedSpark.Thot.Api.Domain.Entities.Example;
 using System.Collections.Generic;
-using RedSpark.Thot.Api.Domain.Interfaces;
 using RedSpark.Thot.Api.Data.Repository;
-using RedSpark.Thot.Api.Models.Lead.Output;
-using RedSpark.Thot.Api.Infra.CrossCutting.Helpers;
-using Microsoft.EntityFrameworkCore;
 using RedSpark.Thot.Api.Infra.Data.EF.Context;
 using RedSpark.Thot.Api.Domain.Entities.Leads;
 using RedSpark.Thot.Api.Domain.Interfaces.Repositories;
+using RedSpark.Thot.Api.Domain.Interfaces.Validators;
+using RedSpark.Thot.Api.Domain.Validators;
+using RedSpark.Thot.Api.Domain.Interfaces.UnitOfWork;
+using RedSpark.Thot.Api.Infra.Data.UnitOfWork;
+using RedSpark.Thot.Api.Application.Interfaces;
+using RedSpark.Thot.Api.Application.Sevices;
 
 namespace RedSpark.Thot.Api.Infra.IoC
 {
@@ -32,13 +34,13 @@ namespace RedSpark.Thot.Api.Infra.IoC
                     new Product() {Id = 2, Name = "Tênis Nike"},
                 };
             });
+                        
 
-            services.AddSingleton<ICollection<LeadSummary>, List<LeadSummary>>(s =>
-            {
-                return DataGenerator.LeadSummaries(10);
-            });
+            // Services - Application
+            services.AddScoped<ILeadService, LeadService>();
 
-
+            // UnitOfWork
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Repositories
             services.AddScoped<ILeadRepository, LeadEFRepository>();
@@ -46,6 +48,11 @@ namespace RedSpark.Thot.Api.Infra.IoC
             // DbSets
             services.AddScoped(sp => sp.GetService<ThotContext>().Set<Lead>());
 
+            // Validators
+            services.AddScoped<ILeadValidator, LeadValidator>();
+
+            // Rules
+            services.AddScoped<Lead.ValidationRules.CreationRules>();
 
             // Usando um repositorio que a grava em uma coleção em memoria
             //services.AddScoped<ILeadRepository, LeadCollectionRepository>();

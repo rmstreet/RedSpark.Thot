@@ -46,9 +46,11 @@ namespace RedSpark.Thot.Api.Domain.Entities.Leads
                     RuleFor(lead => lead.CreatedById)
                         .NotEmpty().WithMessage("lead.createdby.is.required");
 
+                    RuleFor(lead => lead.Status)
+                        .NotEmpty().WithMessage("lead.status.is.required");
                 }
             }
-
+                       
         }
 
     }

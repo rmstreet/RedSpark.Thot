@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RedSpark.Thot.Api.Models.Leads.Input
+namespace RedSpark.Thot.Api.Infra.CrossCutting.Extensions
 {
-    public class LeadFilter
+    public static class EnumExtentioncs
     {
-
+        
     }
 }
