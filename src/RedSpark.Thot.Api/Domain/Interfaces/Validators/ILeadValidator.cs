@@ -5,6 +5,6 @@ namespace RedSpark.Thot.Api.Domain.Interfaces.Validators
 {
     public interface ILeadValidator
     {
-        ValidationResult Creation(Lead lead);
+        bool Creation(Lead lead);
     }
 }

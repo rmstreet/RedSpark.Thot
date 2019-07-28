@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using RedSpark.Thot.Api.Domain.Core.Notifications;
 
 namespace RedSpark.Thot.Api.Application.AutoMapper
 {
@@ -6,7 +7,7 @@ namespace RedSpark.Thot.Api.Application.AutoMapper
     {
         public DomainToModelMappingProfile()
         {
-
+            CreateMap<Notification, Application.Models.Generics.Output.ErroModel>();
         }
     }
 }

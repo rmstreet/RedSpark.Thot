@@ -1,25 +1,24 @@
-﻿using FluentValidation.Results;
+﻿using RedSpark.Thot.Api.Domain.Core.Notifications;
 using RedSpark.Thot.Api.Domain.Entities.Leads;
 using RedSpark.Thot.Api.Domain.Interfaces.Validators;
 using static RedSpark.Thot.Api.Domain.Entities.Leads.Lead.ValidationRules;
 
 namespace RedSpark.Thot.Api.Domain.Validators
 {
-    public class LeadValidator : ILeadValidator
+    public class LeadValidator : BaseValidator, ILeadValidator
     {
 
         private CreationRules _creation;
-
-        public LeadValidator(CreationRules creation)   //  <- Injetando mais abstrações para validação
+        
+        public LeadValidator(CreationRules creation, INotificationHandler notificationHandler) //  <- Injetando mais abstrações para validação, se necessario.
+            : base(notificationHandler)
         {
             _creation = creation;
         }
 
-        public ValidationResult Creation(Lead lead)
+        public bool Creation(Lead lead)
         {
-            // Mias Validações
-
-            return _creation.Validate(lead);
+            return IsValid(_creation.Validate(lead));
         }
     }
 }

@@ -11,6 +11,7 @@ using RedSpark.Thot.Api.Domain.Interfaces.UnitOfWork;
 using RedSpark.Thot.Api.Infra.Data.UnitOfWork;
 using RedSpark.Thot.Api.Application.Interfaces;
 using RedSpark.Thot.Api.Application.Sevices;
+using RedSpark.Thot.Api.Domain.Core.Notifications;
 
 namespace RedSpark.Thot.Api.Infra.IoC
 {
@@ -53,6 +54,11 @@ namespace RedSpark.Thot.Api.Infra.IoC
 
             // Rules
             services.AddScoped<Lead.ValidationRules.CreationRules>();
+
+            // Notification
+            services.AddScoped<INotificationHandler, NotificationHandler>();
+
+
 
             // Usando um repositorio que a grava em uma coleção em memoria
             //services.AddScoped<ILeadRepository, LeadCollectionRepository>();

@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Core\Notifications\" />
     <Folder Include="Infra\CrossCutting\Helpers\" />
     <Folder Include="Infra\Data\EF\Migrations\" />
   </ItemGroup>
