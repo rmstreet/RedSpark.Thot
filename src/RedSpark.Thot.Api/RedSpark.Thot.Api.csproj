@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Infra\CrossCutting\Helpers\" />
-    <Folder Include="Infra\Data\EF\Migrations\" />
   </ItemGroup>
 
 </Project>

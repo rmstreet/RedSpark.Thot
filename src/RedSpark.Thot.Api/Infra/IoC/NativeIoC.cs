@@ -12,6 +12,8 @@ using RedSpark.Thot.Api.Infra.Data.UnitOfWork;
 using RedSpark.Thot.Api.Application.Interfaces;
 using RedSpark.Thot.Api.Application.Sevices;
 using RedSpark.Thot.Api.Domain.Core.Notifications;
+using RedSpark.Thot.Api.Domain.Entities.Persons;
+using RedSpark.Thot.Api.Infra.Data.Repository;
 
 namespace RedSpark.Thot.Api.Infra.IoC
 {
@@ -45,9 +47,11 @@ namespace RedSpark.Thot.Api.Infra.IoC
 
             // Repositories
             services.AddScoped<ILeadRepository, LeadEFRepository>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
 
             // DbSets
             services.AddScoped(sp => sp.GetService<ThotContext>().Set<Lead>());
+            services.AddScoped(sp => sp.GetService<ThotContext>().Set<Person>());
 
             // Validators
             services.AddScoped<ILeadValidator, LeadValidator>();

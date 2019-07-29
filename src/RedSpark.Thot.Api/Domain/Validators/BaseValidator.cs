@@ -31,5 +31,18 @@ namespace RedSpark.Thot.Api.Domain.Validators
                 _notificationHandler.Handler(notifications);
             }
         }
+
+        protected void AddNotification(ValidationFailure validationFailure)
+        {            
+            var notifications = new Notification(validationFailure.ErrorMessage);
+            _notificationHandler.Handler(notifications);            
+        }
+
+        protected void AddNotification(string error)
+        {
+            var notifications = new Notification(error);
+            _notificationHandler.Handler(notifications);
+        }
+
     }
 }

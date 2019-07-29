@@ -27,9 +27,10 @@ namespace RedSpark.Thot.Api.Configurations
             });
             builder.AddApiExplorer();
             builder.AddCors();
+                       
 
-            services
-                .AddDbContext<Infra.Data.EF.Context.ThotContext>(options => options.UseSqlServer(configuration.GetConnectionString("ThotSqlServerConnection")));
+            // Add Identity Configuration
+            services.AddDataBaseConfiguration(configuration);
 
             //builder.AddMySwagger();
             // Register Dependency
@@ -76,6 +77,10 @@ namespace RedSpark.Thot.Api.Configurations
             // Configurando acesso estático ao arquivo de log (após gravar log no banco remover)
             // https://github.com/aspnet/AspNetCore/blob/507a765dfb078f446c445318e7b55ad9f7f5cbe0/src/Middleware/StaticFiles/src/StaticFileMiddleware.cs
             app.UseStaticFiles();
+
+            // Identity
+            app.UseAuthentication();
+
 
             // Configurando MVC
             app.UseMvc();

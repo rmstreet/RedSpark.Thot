@@ -3,29 +3,29 @@ using RedSpark.Thot.Api.Domain.Entities.Projects;
 using RedSpark.Thot.Api.Domain.Entities.Skills;
 using RedSpark.Thot.Api.Domain.Entities.Leads;
 using System.Collections.Generic;
-using System.Security;
+using RedSpark.Thot.Api.Domain.Core.Entities;
 
 namespace RedSpark.Thot.Api.Domain.Entities.Persons
 {
-    public class Person : User
+    public class Person : Entity
     {
-        public Person(string imageUrl, string name, string resume, string job, Phone phone, string urlGithub, string username, SecureString password)
-            : base(username, password)
+        public Person(string name, string job, string email)
         {
-            ImageUrl = imageUrl;
             Name = name;
-            Resume = resume;
             Job = job;
-            Phone = phone;
-            UrlGithub = urlGithub;
+            Email = email;
+            Active = false; 
+            // Só será ativada quando o usuario fizer o login com o mesmo email associado.
         }
 
         public string ImageUrl { get; private set; }
         public string Name { get; private set; }
         public string Resume { get; private set; }
         public string Job { get; private set; }
+        public string Email { get; private set; } // Poderia ser um ValueObject de Email, onde teria um tratamento para lidar com Email
         public Phone Phone { get; private set; }
         public string UrlGithub { get; private set; }
+        public bool Active { get; private set; }
 
         public List<Lead> LeadsCreatedByMe { get; private set; }
         public List<PersonLead> LeadsFollowedByMe { get; private set; }
@@ -34,10 +34,12 @@ namespace RedSpark.Thot.Api.Domain.Entities.Persons
         public List<Coment> ComentsByMe { get; private set; }
         public List<ProjectPerson> ProjectsMember { get; private set; }
 
+        // Relacionamento 1 -> 1 com Usuario, mas uma pessoa pode existir sem ter usuário
+        public int? UserId { get; private set; }
+        public User User { get; private set; }
+
         /**
-         * 
-         * (21) 98754-7632
-         * 11987547632
+         * Criar Metodos para atualizar os campos Opicionais
 
          * */
 

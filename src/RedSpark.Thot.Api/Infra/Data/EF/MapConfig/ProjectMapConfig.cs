@@ -6,7 +6,7 @@ using RedSpark.Thot.Api.Infra.Data.EF.MapConfig.Extensions;
 
 namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
 {
-    public partial class ProjectMapConfig : IEntityTypeConfiguration<Project>
+    public class ProjectMapConfig : IEntityTypeConfiguration<Project>
     {
         public void Configure(EntityTypeBuilder<Project> builder)
         {

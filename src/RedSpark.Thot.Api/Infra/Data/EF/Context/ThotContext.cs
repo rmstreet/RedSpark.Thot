@@ -1,25 +1,27 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RedSpark.Thot.Api.Domain.Core.Entities;
 using RedSpark.Thot.Api.Domain.Entities.Leads;
 using RedSpark.Thot.Api.Domain.Entities.Persons;
 using RedSpark.Thot.Api.Domain.Entities.Projects;
 using RedSpark.Thot.Api.Domain.Entities.Skills;
+using RedSpark.Thot.Api.Infra.Data.EF.MapConfig;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using static RedSpark.Thot.Api.Infra.Data.EF.MapConfig.ProjectMapConfig;
 
 namespace RedSpark.Thot.Api.Infra.Data.EF.Context
 {
-    public class ThotContext : DbContext
+    public class ThotContext : IdentityDbContext
+        <User, IdentityRole<int>, int>
     {
         // LEADS
         public DbSet<Lead> Leads { get; set; }
         public DbSet<Coment> Coments { get; set; }
 
         // PERSONS
-        public DbSet<User> Users { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<PersonLead> PersonLeads { get; set; }
         
@@ -41,7 +43,11 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {            
+        {
+            // Obs: Deixamos as configurações defult serem aplicadas primeiro
+            base.OnModelCreating(modelBuilder);
+            // Obs: Depois colocamos a nossa implementação junto com a customização do Identity.
+
 
             #region Mapeamento default para propriedades - Exemplo: Todas as Propriedades String como varchar
             // Apartir do EF Core v1.1.0
@@ -142,15 +148,37 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
             #endregion
 
             #region Configurando Modelos - Opção 2
-            // modelBuilder.ApplyConfiguration(new LeadMapConfig());
-            ///...
+
+            modelBuilder.ApplyConfiguration(new LeadMapConfig());
+            modelBuilder.ApplyConfiguration(new PersonLeadMapConfig());
+            modelBuilder.ApplyConfiguration(new PersonMapConfig());
+            modelBuilder.ApplyConfiguration(new PersonSkillMapConfig());
+            modelBuilder.ApplyConfiguration(new ProjectMapConfig());
+            modelBuilder.ApplyConfiguration(new ProjectPersonMapConfig());
+            modelBuilder.ApplyConfiguration(new ProjectSkillMapConfig());
+            modelBuilder.ApplyConfiguration(new SkillMapConfig());
+            modelBuilder.ApplyConfiguration(new ComentMapConfig());
+
+            modelBuilder.ApplyConfiguration(new UserMapConfig());
+            modelBuilder.ApplyConfiguration(new IdentityRoleMapConfig());
+            modelBuilder.ApplyConfiguration(new IdentityRoleClaimMapConfig());
+            modelBuilder.ApplyConfiguration(new IdentityUserClaimMapConfig());
+            modelBuilder.ApplyConfiguration(new IdentityUserLoginMapConfig());
+            modelBuilder.ApplyConfiguration(new IdentityUserRoleMapConfig());
+            modelBuilder.ApplyConfiguration(new IdentityUserTokenMapConfig());
+
             #endregion
 
             #region Configurando Modelos - Opção 3 (Nova)
 
-            var assembly = typeof(ThotContext).Assembly;
-            modelBuilder.ApplyConfigurationsFromAssembly(assembly);
+            // Obs: Como estou usando o herdando do identity e customizo ele, 
+            // deixar o mapeamento ser adicionado de modo automatico implica em 
+            // ele adicionar o map do que eu fiz, quanto o que padrão do Identity.
+            // Por isso não usamos essa forma, neste cenário.
 
+            //var assembly = typeof(ThotContext).Assembly;
+            //modelBuilder.ApplyConfigurationsFromAssembly(assembly);
+                       
             #endregion
 
             #region Atribuir logicas de criação e atualização default - Part 1 - Opção 2
@@ -181,7 +209,7 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.Context
 
             #endregion
 
-            base.OnModelCreating(modelBuilder);
+
         }
 
 
