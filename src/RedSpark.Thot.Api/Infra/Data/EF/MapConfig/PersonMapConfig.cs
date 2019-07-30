@@ -61,11 +61,10 @@ namespace RedSpark.Thot.Api.Infra.Data.EF.MapConfig
                 .HasForeignKey(proj => proj.ResponsibleId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Reference: The child/dependent side could not be determined for the one-to-one relationship between 'User.Person' and 'Person.User'. To identify the child/dependent side of the relationship, configure the foreign key property. If these navigations should not be part of the same relationship configure them without specifying the inverse. See http://go.microsoft.com/fwlink/?LinkId=724062 for more details.
-            //builder
-            //    .HasOne(p => p.User)
-            //    .WithOne(u => u.Person)
-            //    .HasForeignKey<Person>(p => p.UserId);
+            // Criando Index para E-mail
+            builder
+                .HasIndex(p => p.Email)
+                .IsUnique();
 
             builder
                 .ConfigMapDefaultFields();

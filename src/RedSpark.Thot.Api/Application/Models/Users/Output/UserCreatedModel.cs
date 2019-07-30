@@ -8,5 +8,6 @@ namespace RedSpark.Thot.Api.Application.Models.Users.Output
 {
     public class UserCreatedModel : BaseModel
     {
+        public string Token { get; set; }
     }
 }

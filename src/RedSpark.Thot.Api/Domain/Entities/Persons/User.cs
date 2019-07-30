@@ -32,5 +32,11 @@ namespace RedSpark.Thot.Api.Domain.Entities.Persons
                 }
             }
         }
+
+        internal void SetPerson(Person person)
+        {            
+            Person = person;
+            Person.Actived();
+        }
     }
 }

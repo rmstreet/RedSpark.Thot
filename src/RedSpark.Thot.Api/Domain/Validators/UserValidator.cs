@@ -25,16 +25,24 @@ namespace RedSpark.Thot.Api.Domain.Validators
         {
             var isValid = IsValid(_creation.Validate(user));
 
-            if (isValid && FindPerson(user) == null)
+            var person = FindPerson(user);
+
+            if (person == null)
             {                
-                AddNotification("user.email.not.person.register");
+                AddNotification("user.email.not.found.person");
+                isValid = false;
+            }else if (person.Active)
+            {
+                AddNotification("user.email.is.in.use");
+                isValid = false;
             }
+
             return isValid;
         }
 
         private Person FindPerson(User user)
         {
-            return _personRepository.GetAll(1, default(int), PersonQuery.FindByEmail(user.Email)).SingleOrDefault();
+            return _personRepository.GetByEmail(user.Email);
         }
     }
 }

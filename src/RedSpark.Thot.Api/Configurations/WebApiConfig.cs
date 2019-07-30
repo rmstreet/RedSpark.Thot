@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RedSpark.Thot.Api.Infra.CrossCutting.Settings;
+using RedSpark.Thot.Api.Infra.Data.EF.Context;
 using RedSpark.Thot.Api.Infra.IoC;
 using System;
 
@@ -18,9 +19,7 @@ namespace RedSpark.Thot.Api.Configurations
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
             
-            var builder = services
-                .AddMvcCore(options => { options.EnableEndpointRouting = true; })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            var builder = services.AddMvcCore(options => { options.EnableEndpointRouting = true; }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             builder.AddJsonFormatters(o =>
             {
                 o.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
@@ -29,10 +28,12 @@ namespace RedSpark.Thot.Api.Configurations
             builder.AddCors();
                        
 
-            // Add Identity Configuration
+            // Add Database Configuration
             services.AddDataBaseConfiguration(configuration);
 
-            //builder.AddMySwagger();
+            // JWT
+            services.AddJWTConfigurations(configuration);
+
             // Register Dependency
             services.Resolve();
 
@@ -81,6 +82,8 @@ namespace RedSpark.Thot.Api.Configurations
             // Identity
             app.UseAuthentication();
 
+            // Add Custom Data - Não usar isso em Produção
+            // app.IncludeData();
 
             // Configurando MVC
             app.UseMvc();

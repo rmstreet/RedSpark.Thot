@@ -4,5 +4,6 @@ namespace RedSpark.Thot.Api.Domain.Interfaces.Repositories
 {
     public interface IPersonRepository  : IBaseRepository<Person>
     {
+        Person GetByEmail(string email);
     }
 }

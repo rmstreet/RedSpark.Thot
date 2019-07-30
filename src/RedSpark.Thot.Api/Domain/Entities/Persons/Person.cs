@@ -4,6 +4,7 @@ using RedSpark.Thot.Api.Domain.Entities.Skills;
 using RedSpark.Thot.Api.Domain.Entities.Leads;
 using System.Collections.Generic;
 using RedSpark.Thot.Api.Domain.Core.Entities;
+using System;
 
 namespace RedSpark.Thot.Api.Domain.Entities.Persons
 {
@@ -28,6 +29,12 @@ namespace RedSpark.Thot.Api.Domain.Entities.Persons
         public bool Active { get; private set; }
 
         public List<Lead> LeadsCreatedByMe { get; private set; }
+
+        internal void Actived()
+        {
+            Active = true;
+        }
+
         public List<PersonLead> LeadsFollowedByMe { get; private set; }
         public List<PersonSkill> MySkills { get; private set; }
         public List<Project> ProjectsResponsible { get; private set; }

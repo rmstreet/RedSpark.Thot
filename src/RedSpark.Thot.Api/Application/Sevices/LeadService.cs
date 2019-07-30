@@ -44,6 +44,7 @@ namespace RedSpark.Thot.Api.Application.Sevices
             // TODO: Chama repository
             var leadRepository =  _unitOfWork.GetRepository<ILeadRepository>();
             var leadCreated = leadRepository.Create(lead);
+                       
 
             LeadDetailsModel leadDetailsModel = new LeadDetailsModel();
 

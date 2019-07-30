@@ -9,6 +9,7 @@ namespace RedSpark.Thot.Api.Infra.CrossCutting.Settings
     public class MySettings
     {
         public SwaggerSettings Swagger { get; set; }
+        public AppSettings AppSettings { get; set; }
     }
 
     public class SwaggerSettings
@@ -23,5 +24,13 @@ namespace RedSpark.Thot.Api.Infra.CrossCutting.Settings
         public string Description { get; set; }
         public string Version { get; set; }
     }
-    
+
+    public class AppSettings
+    {
+        public string Secret { get; set; }
+        public int ExpirationHour { get; set; }
+        public string From { get; set; }
+        public string ValidIn { get; set; }
+    }
+
 }
